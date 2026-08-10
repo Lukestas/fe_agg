@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -6,4 +6,14 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   templateUrl: './navegation.html',
 })
-export class Navegation {}
+export class Navegation {
+  menuOpen = signal(false);
+
+  toggleMenu(): void {
+    this.menuOpen.update((value) => !value);
+  }
+
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
+}

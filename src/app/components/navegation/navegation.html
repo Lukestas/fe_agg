@@ -1,6 +1,90 @@
-<nav>
-  <ul>
-    <li><a routerLink="/">Inicio</a></li>
-    <li><a routerLink="/user">Usuario</a></li>
+<nav class="relative">
+  <button
+    type="button"
+    class="flex h-11 w-11 items-center justify-center rounded-lg border border-green-800 bg-white text-green-800 shadow-sm transition-colors hover:bg-green-50 md:hidden"
+    aria-label="Abrir menú"
+    [attr.aria-expanded]="menuOpen()"
+    (click)="toggleMenu()"
+  >
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      class="h-6 w-6"
+      aria-hidden="true"
+    >
+      <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+    </svg>
+  </button>
+
+  <ul class="hidden items-center gap-2 md:flex">
+    <li>
+      <a
+        class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+        routerLink="/"
+        >Inicio</a
+      >
+    </li>
+    <li>
+      <a
+        class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+        routerLink="/new/animal"
+        >+ Animal</a
+      >
+    </li>
+    <li>
+      <a
+        class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+        routerLink="/new/animal"
+        >+ Categoría</a
+      >
+    </li>
+    <li>
+      <a
+        class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+        routerLink="/user"
+        >Usuario</a
+      >
+    </li>
   </ul>
+
+  @if (menuOpen()) {
+    <ul
+      class="absolute right-0 top-14 z-20 mt-2 w-52 overflow-hidden rounded-xl border border-green-200 bg-white shadow-lg md:hidden"
+    >
+      <li>
+        <a
+          class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+          routerLink="/"
+          (click)="closeMenu()"
+          >Inicio</a
+        >
+      </li>
+      <li>
+        <a
+          class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+          routerLink="/user"
+          (click)="closeMenu()"
+          >Usuario</a
+        >
+      </li>
+      <li>
+        <a
+          class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+          routerLink="/new/animal"
+          (click)="closeMenu()"
+          >+ Animal</a
+        >
+      </li>
+      <li>
+        <a
+          class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+          routerLink="/new/animal"
+          (click)="closeMenu()"
+          >+ Categoría</a
+        >
+      </li>
+    </ul>
+  }
 </nav>

@@ -1,24 +1,29 @@
 import { Routes } from '@angular/router';
-import Login from './components/auth/login/login';
-import Home from './components/home/home';
-import { permissionsGuard } from './components/auth/guard/permissions-guard';
 
 export const routes: Routes = [
   {
-    path: '',
-    component: Login,
+    path: 'login',
+    loadComponent: () => import('./components/auth/login/login'),
     title: 'Inicio de sesión',
   },
   {
-    path: 'home',
-    canActivate: [permissionsGuard],
+    path: '',
     loadComponent: () => import('./components/home/home'),
     title: 'Inicio',
+  },
+  {
+    path: 'new/animal',
+    loadComponent: () => import('./components/animal/animal-form/animal-form'),
+    title: 'Registro de usuario',
   },
   {
     path: 'register',
     loadComponent: () => import('./components/auth/register/register'),
     title: 'Registro de usuario',
   },
-  { path: '**', loadComponent: () => import('./components/notfound/notfound') },
+  {
+    path: '**',
+    loadComponent: () => import('./components/notfound/notfound'),
+    title: 'Página no encontrada',
+  },
 ];
