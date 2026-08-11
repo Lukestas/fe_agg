@@ -1,1 +1,42 @@
-<p>animal-list works!</p>
+<section class="m-4 grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
+  @if (!loading()) {
+    @if (animals().length > 0) {
+      @for (animal of animals(); track animal.animalId) {
+        <article
+          class="flex flex-col overflow-hidden rounded-2xl border border-amber-200 bg-white shadow-sm transition-transform duration-200 hover:-translate-y-0.5 sm:flex-row"
+        >
+          <div class="w-full sm:w-36 md:w-40 lg:w-44">
+            <img
+              [src]="animal.imageUrl"
+              [alt]="animal.popularName"
+              class="h-52 w-full object-cover sm:h-full sm:w-full"
+            />
+          </div>
+
+          <div class="flex flex-1 flex-col justify-center gap-2 p-4">
+            <h3 class="text-xl font-bold text-slate-800">{{ animal.popularName }}</h3>
+            <p class="text-sm italic text-slate-600">{{ animal.scientificName }}</p>
+            <p class="text-sm text-slate-700">
+              <span class="font-semibold">Dieta:</span> {{ animal.diet }}
+            </p>
+            <p class="text-sm text-slate-700">
+              <span class="font-semibold">Estado:</span>
+              {{ animal.isExtinct ? ' Está extinto' : ' Existe' }}
+            </p>
+          </div>
+        </article>
+      }
+    } @else {
+      <p class="text-slate-600">No hay animales para mostrar</p>
+    }
+  } @else {
+    <p class="text-slate-600">Cargando</p>
+  }
+</section>
+<nav class="list-none flex justify-center">
+  <li><button>&lt;</button></li>
+  @for (page of pages; track $index) {
+    <li><button>1</button></li>
+  }
+  <li><button>&gt;</button></li>
+</nav>
