@@ -1,3 +1,3 @@
 export const environment = {
-  APIURL: process.env['APIURL'],
+  APIURL: 'https://be-agg.onrender.com/',
 };
