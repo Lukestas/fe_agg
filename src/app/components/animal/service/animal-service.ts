@@ -1,7 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { AnimalRequest, CategoryResponse, PageAnimals } from '../models/animal';
+import {
+  AnimalCreateRequest,
+  AnimalFilterRequest,
+  CategoryResponse,
+  PageAnimals,
+} from '../models/animal';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,7 +16,7 @@ export class AnimalService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.APIURL}api`;
 
-  searchAnimals(filters: AnimalRequest): Observable<PageAnimals> {
+  searchAnimals(filters: AnimalFilterRequest): Observable<PageAnimals> {
     let params = new HttpParams();
     if (filters.category !== undefined) {
       params = params.set('category', filters.category);
@@ -36,5 +41,9 @@ export class AnimalService {
 
   getCategories() {
     return this.http.get<CategoryResponse[]>(`${this.apiUrl}/category`);
+  }
+
+  saveAnimal(animal: AnimalCreateRequest) {
+    return this.http.post(`${this.apiUrl}/animal`, animal);
   }
 }

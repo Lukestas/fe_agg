@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { AnimalRequest, AnimalResponse, CategoryResponse } from '../models/animal';
+import { AnimalFilterRequest, AnimalResponse, CategoryResponse } from '../models/animal';
 import { AnimalService } from '../service/animal-service';
 
 @Component({
@@ -41,7 +41,7 @@ export class AnimalList implements OnInit {
     this.loading.set(true);
     this.animals.set([]);
 
-    const filters: AnimalRequest = {
+    const filters: AnimalFilterRequest = {
       category: this.categoryFilter(),
       isExtinct: this.isExtinctFilter(),
       popularName: this.popularNameFilter().trim() || undefined,

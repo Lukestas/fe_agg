@@ -45,11 +45,23 @@ export interface CategoryResponse {
   categoryName: string;
 }
 
-export interface AnimalRequest {
+export interface AnimalFilterRequest {
   isExtinct?: boolean;
   popularName?: string;
   scientificName?: string;
   category?: number;
   page?: number;
   totalPerPage?: number;
+}
+
+export interface AnimalCreateRequest {
+  scientificName: string;
+  popularName: string;
+  category: {
+    categoryId: number;
+  };
+  description: string;
+  diet: string;
+  imageUrl: string;
+  isExtinct: boolean;
 }
