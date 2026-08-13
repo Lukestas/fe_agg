@@ -1,8 +1,9 @@
 <section class="m-4">
-  <div class="flex justify-between my-4">
-    <h2 class="font-bold">Animales</h2>
+  <div class="flex justify-between items-center my-4">
+    <h2 class="font-bold">Lista de animales</h2>
     <button
       type="button"
+      (click)="openFilterMenu.set(!openFilterMenu())"
       class="flex font-bold items-center gap-1 bg-gray-200 hover:bg-gray-300 p-2 rounded-xl cursor-pointer"
     >
       <svg
@@ -22,17 +23,63 @@
       Filtros
     </button>
   </div>
-
-  <div>
-    @if (true) {
-      <div class="">
-        <label for="">
-          <span></span>
-          <input type="text" />
-        </label>
+  @if (openFilterMenu()) {
+    <div class="border-t">
+      <div class="py-3 flex gap-3 flex-wrap">
+        <div>
+          <label class="flex flex-col">
+            <span>Nombre Popular</span>
+            <input
+              type="text"
+              placeholder="Mono aullador"
+              (input)="popularNameFilter.set($any($event.target).value)"
+              (input)="changeFilters()"
+              class="bg-white p-2 rounded-xl border border-green-600"
+            />
+          </label>
+        </div>
+        <div class="">
+          <label class="flex flex-col">
+            <span>Nombre Cientifico</span>
+            <input
+              type="text"
+              placeholder="Alouatta palliata"
+              (input)="scientificNameFilter.set($any($event.target).value)"
+              (input)="changeFilters()"
+              class="bg-white p-2 rounded-xl border border-green-600"
+            />
+          </label>
+        </div>
+        <div class="">
+          <label class="flex flex-col">
+            <span>Categoria</span>
+            <select
+              (change)="onCategoryChange($event)"
+              class="bg-white p-2 rounded-xl border border-green-600"
+            >
+              <option value="">Todos</option>
+              @for (category of categories(); track category.categoryId) {
+                <option [value]="category.categoryId">{{ category.categoryName }}</option>
+              }
+            </select>
+          </label>
+        </div>
+        <div class="">
+          <label class="flex flex-col">
+            <span>Estado</span>
+            <select
+              (change)="onStatusChange($event)"
+              class="bg-white p-2 rounded-xl border border-green-600"
+            >
+              <option value="">Todos</option>
+              <option value="true">Extintos</option>
+              <option value="false">Existentes</option>
+            </select>
+          </label>
+        </div>
       </div>
-    }
-  </div>
+    </div>
+  }
   <div class="border-t">
     <div class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))] mt-4">
       @if (!loading()) {

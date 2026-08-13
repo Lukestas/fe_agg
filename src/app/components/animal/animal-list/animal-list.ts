@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { AnimalResponse } from '../models/animal';
+import { AnimalRequest, AnimalResponse, CategoryResponse } from '../models/animal';
 import { AnimalService } from '../service/animal-service';
 
 @Component({
@@ -14,22 +14,41 @@ export class AnimalList implements OnInit {
   currentPage = signal(1);
   pages = Array.from({ length: this.totalPages() });
 
-  constructor(private animalApi: AnimalService) {}
+  //filters
+  categories = signal<CategoryResponse[]>([]);
+  openFilterMenu = signal(false);
+  popularNameFilter = signal('');
+  scientificNameFilter = signal('');
+  categoryFilter = signal<number | undefined>(undefined);
+  isExtinctFilter = signal<boolean | undefined>(undefined);
 
-  filters = {
-    popularName: '',
-    scientificName: '',
-    category: '',
-    isExtinct: undefined,
-  };
+  constructor(private animalApi: AnimalService) {}
 
   ngOnInit(): void {
     this.loadAnimals();
+    this.loadCategories();
+  }
+
+  private loadCategories() {
+    this.animalApi.getCategories().subscribe({
+      next: (res) => {
+        this.categories.set(res);
+      },
+    });
   }
 
   private loadAnimals() {
     this.loading.set(true);
-    this.animalApi.searchAnimals().subscribe({
+    this.animals.set([]);
+
+    const filters: AnimalRequest = {
+      category: this.categoryFilter(),
+      isExtinct: this.isExtinctFilter(),
+      popularName: this.popularNameFilter().trim() || undefined,
+      scientificName: this.scientificNameFilter().trim() || undefined,
+    };
+
+    this.animalApi.searchAnimals(filters).subscribe({
       next: (res) => {
         this.animals.set(res.content);
         this.loading.set(false);
@@ -39,5 +58,21 @@ export class AnimalList implements OnInit {
     });
   }
 
-  changeFilters() {}
+  changeFilters() {
+    this.loadAnimals();
+  }
+
+  onCategoryChange(e: Event) {
+    const category = e.target as HTMLSelectElement;
+    const value = category.value;
+    this.categoryFilter.set(value === '' ? undefined : Number(value));
+    this.changeFilters();
+  }
+
+  onStatusChange(e: Event) {
+    const status = e.target as HTMLSelectElement;
+    const value = status.value;
+    this.isExtinctFilter.set(value === '' ? undefined : value === 'true');
+    this.changeFilters();
+  }
 }

@@ -46,7 +46,7 @@ export interface CategoryResponse {
 }
 
 export interface AnimalRequest {
-  isExtinct?: string;
+  isExtinct?: boolean;
   popularName?: string;
   scientificName?: string;
   category?: number;
