@@ -12,9 +12,14 @@ export const routes: Routes = [
     title: 'Inicio',
   },
   {
-    path: 'new/animal',
+    path: 'animal/crear',
     loadComponent: () => import('./components/animal/animal-form/animal-form'),
-    title: 'Registro de usuario',
+    title: 'Agregar nuevo animal',
+  },
+  {
+    path: 'animal/editar/:id',
+    loadComponent: () => import('./components/animal/animal-form/animal-form'),
+    title: 'Editar animal',
   },
   {
     path: 'register',

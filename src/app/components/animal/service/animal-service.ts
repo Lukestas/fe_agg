@@ -4,6 +4,7 @@ import { environment } from '../../../../environments/environment';
 import {
   AnimalCreateRequest,
   AnimalFilterRequest,
+  AnimalResponse,
   CategoryResponse,
   PageAnimals,
 } from '../models/animal';
@@ -45,5 +46,13 @@ export class AnimalService {
 
   saveAnimal(animal: AnimalCreateRequest) {
     return this.http.post(`${this.apiUrl}/animal`, animal);
+  }
+
+  getAnimalById(animalId: number) {
+    return this.http.get<AnimalResponse>(`${this.apiUrl}/animal/${animalId}`);
+  }
+
+  updateAnimal(animalId: number, animal: AnimalCreateRequest) {
+    return this.http.put(`${this.apiUrl}/animal/${animalId}`, animal);
   }
 }

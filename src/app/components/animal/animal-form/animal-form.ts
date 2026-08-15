@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit, signal } from '@angular/core';
-import { form, FormField, minLength, required } from '@angular/forms/signals';
+import { Component, OnInit, signal } from '@angular/core';
+import { form, FormField, required } from '@angular/forms/signals';
 import { AnimalService } from '../service/animal-service';
-import { AnimalCreateRequest, CategoryResponse } from '../models/animal';
-import { Router } from '@angular/router';
+import { AnimalCreateRequest, AnimalResponse, CategoryResponse } from '../models/animal';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-animal-form',
   imports: [FormField],
@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 })
 export default class AnimalForm implements OnInit {
   categories = signal<CategoryResponse[]>([]);
+  animal: AnimalResponse | undefined;
+
+  isEditing = signal(false);
 
   animalFormModel = signal({
     scientificName: '',
@@ -30,6 +33,7 @@ export default class AnimalForm implements OnInit {
   constructor(
     private animalApi: AnimalService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +42,24 @@ export default class AnimalForm implements OnInit {
         this.categories.set(res);
       },
     });
+    const animalId = this.route.snapshot.paramMap.get('id');
+    if (animalId) {
+      this.isEditing.set(true);
+      this.animalApi.getAnimalById(Number(animalId)).subscribe({
+        next: (res) => {
+          this.animal = res;
+          this.animalFormModel.set({
+            diet: res.diet,
+            category: String(res.category.categoryId),
+            description: res.description,
+            imageUrl: res.imageUrl,
+            isExtinct: res.isExtinct,
+            popularName: res.popularName,
+            scientificName: res.scientificName,
+          });
+        },
+      });
+    }
   }
 
   onCategoryChange(e: Event) {
@@ -75,13 +97,24 @@ export default class AnimalForm implements OnInit {
       isExtinct: formValue.isExtinct,
     };
 
-    this.animalApi.saveAnimal(saveRequest).subscribe({
-      next: () => {
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        console.error('Error al guardar el animal:', err);
-      },
-    });
+    if (this.isEditing()) {
+      this.animalApi.updateAnimal(this.animal?.animalId!, saveRequest).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          console.error('Error al guardar el animal:', err);
+        },
+      });
+    } else {
+      this.animalApi.saveAnimal(saveRequest).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          console.error('Error al guardar el animal:', err);
+        },
+      });
+    }
   }
 }

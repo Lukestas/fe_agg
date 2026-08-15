@@ -2,6 +2,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { AnimalFilterRequest, AnimalResponse, CategoryResponse } from '../models/animal';
 import { AnimalService } from '../service/animal-service';
 import { AnimalDetails } from '../animal-details/animal-details';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-animal-list',
@@ -27,7 +28,10 @@ export class AnimalList implements OnInit {
   openDetailModal = signal(false);
   animalSelected = signal<AnimalResponse | undefined>(undefined);
 
-  constructor(private animalApi: AnimalService) {}
+  constructor(
+    private animalApi: AnimalService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.loadAnimals();
@@ -72,6 +76,11 @@ export class AnimalList implements OnInit {
   closeDetailModal() {
     this.openDetailModal.set(false);
     this.animalSelected.set(undefined);
+  }
+
+  editAnimal() {
+    this.openDetailModal.set(false);
+    this.router.navigate([`/animal/editar/${this.animalSelected()?.animalId}`]);
   }
 
   changeFilters() {
