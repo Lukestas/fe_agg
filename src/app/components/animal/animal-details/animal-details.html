@@ -1,1 +1,50 @@
-<p>animal-details works!</p>
+@if (open()) {
+  <div
+    class="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm"
+    (click)="onClose()"
+  >
+    <div
+      class="bg-green-100 max-w-100 px-4 py-2 relative rounded-xl"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="flex justify-end mb-2">
+        <button
+          class="border border-white px-1 text-white bg-red-400 hover:bg-red-700 rounded cursor-pointer"
+          (click)="onClose()"
+        >
+          cerrar
+        </button>
+      </div>
+      <div>
+        <section>
+          <img
+            [src]="animal()?.imageUrl"
+            alt="Animal Image Ilustration"
+            class="border border-green-900 rounded flex self-center"
+          />
+          <h3 class="font-bold text-green-900 mt-2">{{ animal()?.popularName }}</h3>
+          <div class="flex gap-3 mb-2">
+            <span class="italic text-xs p-1 text-gray-800">{{ animal()?.scientificName }}</span>
+            <span class="italic text-xs p-1 border-amber-200 border rounded-xl text-gray-800">{{
+              animal()?.category!.categoryName
+            }}</span>
+          </div>
+        </section>
+        <section class="border-t border-gray-300">
+          @if (animal()?.diet) {
+            <div class="mt-2">
+              <p class="text-sm text-gray-800 font-bold">Alimentación:</p>
+              <p class="text-wrap text-sm text-gray-600">{{ animal()?.diet }}</p>
+            </div>
+          }
+          @if (animal()?.description) {
+            <div class="mt-2">
+              <p class="text-sm text-gray-800 font-bold">Información extra:</p>
+              <p class="text-wrap text-sm text-gray-600">{{ animal()?.description }}</p>
+            </div>
+          }
+        </section>
+      </div>
+    </div>
+  </div>
+}

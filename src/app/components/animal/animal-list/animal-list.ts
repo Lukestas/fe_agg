@@ -1,10 +1,11 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { AnimalFilterRequest, AnimalResponse, CategoryResponse } from '../models/animal';
 import { AnimalService } from '../service/animal-service';
+import { AnimalDetails } from '../animal-details/animal-details';
 
 @Component({
   selector: 'app-animal-list',
-  imports: [],
+  imports: [AnimalDetails],
   templateUrl: './animal-list.html',
 })
 export class AnimalList implements OnInit {
@@ -21,6 +22,10 @@ export class AnimalList implements OnInit {
   scientificNameFilter = signal('');
   categoryFilter = signal<number | undefined>(undefined);
   isExtinctFilter = signal<boolean | undefined>(undefined);
+
+  //modal
+  openDetailModal = signal(false);
+  animalSelected = signal<AnimalResponse | undefined>(undefined);
 
   constructor(private animalApi: AnimalService) {}
 
@@ -56,6 +61,17 @@ export class AnimalList implements OnInit {
         this.currentPage.set(res.number + 1);
       },
     });
+  }
+
+  openDetails(animal: AnimalResponse) {
+    console.log('Abriendo Modal');
+    this.openDetailModal.set(true);
+    this.animalSelected.set(animal);
+  }
+
+  closeDetailModal() {
+    this.openDetailModal.set(false);
+    this.animalSelected.set(undefined);
   }
 
   changeFilters() {

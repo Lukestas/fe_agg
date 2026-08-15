@@ -81,18 +81,19 @@
     </div>
   }
   <div class="border-t">
-    <div class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))] mt-4">
+    <div class="grid gap-4 sm:grid-cols-2 mt-4">
       @if (!loading()) {
         @if (animals().length > 0) {
           @for (animal of animals(); track animal.animalId) {
             <article
-              class="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-transform duration-200 hover:-translate-y-0.5 sm:flex-row"
+              class="cursor-pointer flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-transform duration-200 hover:-translate-y-0.5 sm:flex-row"
+              (click)="openDetails(animal)"
             >
-              <div class="w-full sm:w-36 md:w-40 lg:w-44">
+              <div class="w-full sm:w-36 md:w-40 lg:w-44 bg-gray-300">
                 <img
                   [src]="animal.imageUrl"
                   [alt]="animal.popularName"
-                  class="h-52 w-full object-cover sm:h-full sm:w-full"
+                  class="h-52 w-full sm:h-full sm:w-full object-contain aspect-square"
                 />
               </div>
 
@@ -125,3 +126,9 @@
   }
   <li><button>&gt;</button></li>
 </nav>
+
+<app-animal-details
+  [animal]="animalSelected()"
+  [open]="openDetailModal()"
+  (closeModal)="closeDetailModal()"
+/>
