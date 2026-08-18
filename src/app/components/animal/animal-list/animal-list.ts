@@ -1,4 +1,4 @@
-import { Component, computed, effect, OnInit, signal } from '@angular/core';
+import { Component, effect, OnInit, signal } from '@angular/core';
 import { AnimalFilterRequest, AnimalResponse, CategoryResponse } from '../models/animal';
 import { AnimalService } from '../service/animal-service';
 import { AnimalDetails } from '../animal-details/animal-details';
@@ -29,21 +29,6 @@ export class AnimalList implements OnInit {
   //modal
   openDetailModal = signal(false);
   animalSelected = signal<AnimalResponse | undefined>(undefined);
-
-  // Computed para calcular las páginas a mostrar (máximo 4)
-  displayPages = computed(() => {
-    const current = this.currentPage();
-    const total = this.totalPages();
-    const maxPages = 4;
-    let start = Math.max(1, current - Math.floor(maxPages / 2));
-    let end = Math.min(total, start + maxPages - 1);
-
-    if (end - start + 1 < maxPages) {
-      start = Math.max(1, end - maxPages + 1);
-    }
-
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  });
 
   constructor(
     private animalApi: AnimalService,
@@ -137,7 +122,6 @@ export class AnimalList implements OnInit {
     this.changeFilters();
   }
 
-  // Métodos de navegación
   canGoPrevious(): boolean {
     return this.currentPage() > 1;
   }
@@ -158,10 +142,5 @@ export class AnimalList implements OnInit {
       this.pageFilter.set(this.pageFilter() + 1);
       this.changePage();
     }
-  }
-
-  goToPage(pageNumber: number): void {
-    this.pageFilter.set(pageNumber - 1);
-    this.changePage();
   }
 }

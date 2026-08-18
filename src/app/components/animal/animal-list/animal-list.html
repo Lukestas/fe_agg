@@ -135,7 +135,7 @@
     </select>
   </label>
 
-  <nav class="flex items-center justify-center gap-2">
+  <nav class="flex items-center justify-center gap-4">
     <button
       (click)="previousPage()"
       [disabled]="!canGoPrevious()"
@@ -146,22 +146,9 @@
       ←
     </button>
 
-    <div class="flex gap-1">
-      @for (page of displayPages(); track page) {
-        <button
-          (click)="goToPage(page)"
-          [class.bg-green-600]="page === currentPage()"
-          [class.text-white]="page === currentPage()"
-          [class.bg-white]="page !== currentPage()"
-          [class.text-gray-700]="page !== currentPage()"
-          [class.border-green-600]="page === currentPage()"
-          [class.border-gray-300]="page !== currentPage()"
-          class="px-3 py-2 rounded-lg border min-w-10 font-medium transition-colors hover:bg-green-500 hover:text-white hover:border-green-500"
-        >
-          {{ page }}
-        </button>
-      }
-    </div>
+    <span class="text-sm font-medium text-gray-700 min-w-24 text-center">
+      {{ currentPage() }} de {{ totalPages() }}
+    </span>
 
     <button
       (click)="nextPage()"
@@ -174,7 +161,7 @@
     </button>
   </nav>
 
-  <div class="text-sm text-gray-600">Página {{ currentPage() }} de {{ totalPages() }}</div>
+  <div class="w-32"></div>
 </div>
 
 <app-animal-details
