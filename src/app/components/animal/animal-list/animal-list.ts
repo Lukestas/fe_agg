@@ -3,10 +3,11 @@ import { AnimalFilterRequest, AnimalResponse, CategoryResponse } from '../models
 import { AnimalService } from '../service/animal-service';
 import { AnimalDetails } from '../animal-details/animal-details';
 import { Router } from '@angular/router';
+import { FormField } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-animal-list',
-  imports: [AnimalDetails],
+  imports: [AnimalDetails, FormField],
   templateUrl: './animal-list.html',
 })
 export class AnimalList implements OnInit {
@@ -23,6 +24,8 @@ export class AnimalList implements OnInit {
   scientificNameFilter = signal('');
   categoryFilter = signal<number | undefined>(undefined);
   isExtinctFilter = signal<boolean | undefined>(undefined);
+  totalPerPageFilter = signal<number>(10);
+  pageFilter = signal(0);
 
   //modal
   openDetailModal = signal(false);
@@ -55,6 +58,8 @@ export class AnimalList implements OnInit {
       isExtinct: this.isExtinctFilter(),
       popularName: this.popularNameFilter().trim() || undefined,
       scientificName: this.scientificNameFilter().trim() || undefined,
+      page: this.pageFilter(),
+      totalPerPage: this.totalPerPageFilter(),
     };
 
     this.animalApi.searchAnimals(filters).subscribe({
@@ -84,6 +89,18 @@ export class AnimalList implements OnInit {
   }
 
   changeFilters() {
+    this.loadAnimals();
+    this.pageFilter.set(0);
+  }
+
+  changePage() {
+    this.loadAnimals();
+  }
+
+  onChangeTotalPerPage(e: Event) {
+    const animalsPerPage = e.target as HTMLInputElement;
+    const value = animalsPerPage.value;
+    this.totalPerPageFilter.set(Number(value));
     this.loadAnimals();
   }
 

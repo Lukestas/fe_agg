@@ -119,13 +119,22 @@
     </div>
   </div>
 </section>
-<nav class="list-none flex justify-center">
-  <li><button>&lt;</button></li>
-  @for (page of pages; track $index) {
-    <li><button>1</button></li>
-  }
-  <li><button>&gt;</button></li>
-</nav>
+<div class="flex">
+  <select (change)="onChangeTotalPerPage($event)">
+    <option [value]="10">10</option>
+    <option [value]="30">20</option>
+    <option [value]="30">30</option>
+    <option [value]="40">40</option>
+    <option [value]="50">50</option>
+  </select>
+  <nav class="list-none flex justify-center">
+    <li><button>&lt;</button></li>
+    @for (page of pages; track $index) {
+      <li><button>1</button></li>
+    }
+    <li><button>&gt;</button></li>
+  </nav>
+</div>
 
 <app-animal-details
   [animal]="animalSelected()"
