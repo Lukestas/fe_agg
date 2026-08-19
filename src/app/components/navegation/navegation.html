@@ -18,6 +18,7 @@
     </svg>
   </button>
 
+  <!-- MENÚ DESKTOP -->
   <ul class="hidden items-center gap-2 md:flex">
     <li>
       <a
@@ -46,8 +47,7 @@
           + Categoría
         </a>
       </li>
-    }
-    @if (authService.isAuthenticated()) {
+
       <li>
         <button
           type="button"
@@ -69,6 +69,7 @@
     }
   </ul>
 
+  <!-- MENÚ MÓVIL -->
   @if (menuOpen()) {
     <ul
       class="absolute right-0 top-14 z-20 mt-2 w-52 overflow-hidden rounded-xl border border-green-200 bg-white shadow-lg md:hidden"
@@ -113,27 +114,26 @@
             + Categoría
           </a>
         </li>
-        @if (authService.isAuthenticated()) {
-          <li>
-            <button
-              type="button"
-              class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-              (click)="logout()"
-            >
-              Cerrar sesión
-            </button>
-          </li>
-        } @else {
-          <li>
-            <a
-              class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-              routerLink="/login"
-              (click)="closeMenu()"
-            >
-              +Iniciar sesión
-            </a>
-          </li>
-        }
+
+        <li>
+          <button
+            type="button"
+            class="block w-full border-b border-gray-100 px-4 py-3 text-left font-semibold text-green-800 transition-colors hover:bg-green-50"
+            (click)="logout()"
+          >
+            Cerrar sesión
+          </button>
+        </li>
+      } @else {
+        <li>
+          <a
+            class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+            routerLink="/login"
+            (click)="closeMenu()"
+          >
+            Iniciar sesión
+          </a>
+        </li>
       }
     </ul>
   }
