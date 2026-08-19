@@ -1,7 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { LoginRequest } from '../models/models';
-import { form, FormField, min, required, validate } from '@angular/forms/signals';
+import { form, FormField, required } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../service/auth-service';
 
 @Component({
   selector: 'app-login',
@@ -9,51 +10,55 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './login.html',
 })
 export default class Login {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+  ) {}
+
   loginModel = signal<LoginRequest>({
-    dni: 0,
+    username: '',
     password: '',
   });
 
   loginForm = form(this.loginModel, (path) => {
-    required(path.dni, { message: 'La cédula es requerida' });
-    required(path.password, { message: 'La contraseña es requerida' });
-    min(path.dni, 1, { message: 'La cédula debe ser mayor a un dígito' });
-    validate(path.dni, ({ value }) => {
-      if (!value()) return null;
-      const trueDni = 123;
-      if (value() !== trueDni)
-        return {
-          message: '(Test): El DNI debe ser 123',
-          kind: 'error',
-        };
-      return null;
+    required(path.username, {
+      message: 'El usuario es requerido',
     });
-    validate(path.password, ({ value }) => {
-      if (!value()) return null;
-      const truePassword = '123';
-      if (value() !== truePassword)
-        return {
-          message: '(Test): La contraseña debe ser 123',
-          kind: 'error',
-        };
-      return null;
+
+    required(path.password, {
+      message: 'La contraseña es requerida',
     });
   });
 
   onSubmit(): void {
-    if (this.loginForm.dni().value() === 123 && this.loginForm.password().value() === '123') {
-      localStorage.setItem('logged', 'true');
-      this.router.navigate(['/home']);
-    } else {
-      this.onReset();
-      localStorage.removeItem('logged');
+    if (this.loginForm().invalid()) {
+      this.loginForm().markAsTouched();
+      return;
     }
+
+    const request: LoginRequest = {
+      username: this.loginForm.username().value(),
+      password: this.loginForm.password().value(),
+    };
+
+    this.authService.login(request).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response.token);
+
+        this.router.navigate(['']);
+      },
+
+      error: (error) => {
+        console.error('Error de inicio de sesión:', error);
+
+        this.onReset();
+      },
+    });
   }
 
   onReset(): void {
     this.loginModel.set({
-      dni: 0,
+      username: '',
       password: '',
     });
   }

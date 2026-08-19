@@ -23,30 +23,50 @@
       <a
         class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
         routerLink="/"
-        >Inicio</a
       >
+        Inicio
+      </a>
     </li>
-    <li>
-      <a
-        class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-        routerLink="/animal/crear"
-        >+ Animal</a
-      >
-    </li>
-    <li>
-      <a
-        class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-        routerLink="/category/crear"
-        >+ Categoría</a
-      >
-    </li>
-    <li>
-      <a
-        class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-        routerLink="/user"
-        >Usuario</a
-      >
-    </li>
+
+    @if (authService.isAuthenticated()) {
+      <li>
+        <a
+          class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+          routerLink="/animal/crear"
+        >
+          + Animal
+        </a>
+      </li>
+
+      <li>
+        <a
+          class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+          routerLink="/category/crear"
+        >
+          + Categoría
+        </a>
+      </li>
+    }
+    @if (authService.isAuthenticated()) {
+      <li>
+        <button
+          type="button"
+          class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+          (click)="logout()"
+        >
+          Cerrar sesión
+        </button>
+      </li>
+    } @else {
+      <li>
+        <a
+          class="border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+          routerLink="/login"
+        >
+          Iniciar sesión
+        </a>
+      </li>
+    }
   </ul>
 
   @if (menuOpen()) {
@@ -58,33 +78,63 @@
           class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
           routerLink="/"
           (click)="closeMenu()"
-          >Inicio</a
         >
+          Inicio
+        </a>
       </li>
+
       <li>
         <a
           class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
           routerLink="/user"
           (click)="closeMenu()"
-          >Usuario</a
         >
+          Usuario
+        </a>
       </li>
-      <li>
-        <a
-          class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-          routerLink="/animal/crear"
-          (click)="closeMenu()"
-          >+ Animal</a
-        >
-      </li>
-      <li>
-        <a
-          class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-          routerLink="/category/crear"
-          (click)="closeMenu()"
-          >+ Categoría</a
-        >
-      </li>
+
+      @if (authService.isAuthenticated()) {
+        <li>
+          <a
+            class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+            routerLink="/animal/crear"
+            (click)="closeMenu()"
+          >
+            + Animal
+          </a>
+        </li>
+
+        <li>
+          <a
+            class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+            routerLink="/category/crear"
+            (click)="closeMenu()"
+          >
+            + Categoría
+          </a>
+        </li>
+        @if (authService.isAuthenticated()) {
+          <li>
+            <button
+              type="button"
+              class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+              (click)="logout()"
+            >
+              Cerrar sesión
+            </button>
+          </li>
+        } @else {
+          <li>
+            <a
+              class="block border-b border-gray-100 px-4 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
+              routerLink="/login"
+              (click)="closeMenu()"
+            >
+              +Iniciar sesión
+            </a>
+          </li>
+        }
+      }
     </ul>
   }
 </nav>

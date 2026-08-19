@@ -22,14 +22,17 @@
         d="M4.217 7c-.274 0 -.544 .054 -.797 .161c-1.426 .615 -1.767 2.562 -1.078 4.335c.563 1.451 1.71 2.504 2.941 2.504c.274 0 .544 -.054 .797 -.161c1.426 -.615 1.767 -2.562 1.078 -4.335c-.563 -1.451 -1.71 -2.504 -2.941 -2.504z"
       />
     </svg>
+
     <h1 class="text-green-800 text-4xl font-bold">Animal Gallery Go</h1>
   </header>
 
   <section class="bg-gray-100 rounded-lg p-6 flex flex-col">
     <h2 class="text-center text-2xl font-bold">Inicio de sesión</h2>
+
     <form novalidate class="rounded-lg p-2 gap-4 flex flex-col">
-      <label
-        >Documento de identificación
+      <label>
+        Usuario
+
         <div class="flex border text-black p-1 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -52,21 +55,25 @@
             <path d="M14 16h2" />
             <path d="M14 12h4" />
           </svg>
+
           <input
             class="p-1 no-spinner"
-            type="number"
-            placeholder="Ingrese su cédula"
-            [formField]="loginForm.dni"
+            type="text"
+            placeholder="Ingrese su usuario"
+            [formField]="loginForm.username"
           />
         </div>
       </label>
-      @if (loginForm.dni().touched() && loginForm.dni().errors().length > 0) {
-        @for (error of loginForm.dni().errors(); track $index) {
+
+      @if (loginForm.username().touched() && loginForm.username().errors().length > 0) {
+        @for (error of loginForm.username().errors(); track $index) {
           <p class="text-red-600 text-sm">{{ error.message }}</p>
         }
       }
-      <label
-        >Contraseña
+
+      <label>
+        Contraseña
+
         <div class="flex border text-black p-1 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +85,7 @@
             stroke-linejoin="round"
             class="icon icon-tabler icons-tabler-outline icon-tabler-lock-password w-6"
           >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path stroke="none" d="M0 0 24 0z" fill="none" />
             <path
               d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -6"
             />
@@ -87,6 +94,7 @@
             <path d="M12.01 16h.01" />
             <path d="M9.02 16h.01" />
           </svg>
+
           <input
             class="p-1"
             type="password"
@@ -95,11 +103,13 @@
           />
         </div>
       </label>
+
       @if (loginForm.password().touched() && loginForm.password().errors().length > 0) {
         @for (error of loginForm.password().errors(); track $index) {
           <p class="text-red-600 text-sm">{{ error.message }}</p>
         }
       }
+
       <button
         type="button"
         (click)="onSubmit()"
@@ -107,8 +117,13 @@
       >
         Ingresar
       </button>
+
       <hr />
-      <p>¿No tienes cuenta? <a class="text-blue-800" routerLink="/register">Registrate</a></p>
+
+      <p>
+        ¿No tienes cuenta?
+        <a class="text-blue-800" routerLink="/register">Registrate</a>
+      </p>
     </form>
   </section>
 </main>
