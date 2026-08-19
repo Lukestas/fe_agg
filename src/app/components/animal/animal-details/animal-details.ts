@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { AnimalResponse } from '../models/animal';
+import { AuthService } from '../../auth/service/auth-service';
 
 @Component({
   selector: 'app-animal-details',
@@ -11,6 +12,8 @@ export class AnimalDetails {
   open = input(false);
   closeModal = output<void>();
   editAnimal = output<void>();
+
+  constructor(public authService: AuthService) {}
 
   onClose() {
     this.closeModal.emit();

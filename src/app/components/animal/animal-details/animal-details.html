@@ -8,12 +8,15 @@
       (click)="$event.stopPropagation()"
     >
       <div class="flex justify-between mb-2">
-        <button
-          class="border border-white px-1 text-white bg-blue-500 hover:bg-blue-700 rounded cursor-pointer"
-          (click)="onEdit()"
-        >
-          Editar
-        </button>
+        @if (authService.isAuthenticated()) {
+          <button
+            class="border border-white px-1 text-white bg-blue-500 hover:bg-blue-700 rounded cursor-pointer"
+            (click)="onEdit()"
+          >
+            Editar
+          </button>
+        }
+
         <button
           class="border border-white px-1 text-white bg-red-400 hover:bg-red-700 rounded cursor-pointer"
           (click)="onClose()"
